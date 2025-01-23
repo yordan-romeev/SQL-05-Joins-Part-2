@@ -23,3 +23,15 @@ FROM Orders o
     JOIN Suppliers s ON s.SupplierID = p.SupplierID
     JOIN Customers c ON c.CustomerID = o.CustomerID
 GROUP BY s.SupplierName, p.ProductName, c.CustomerName
+
+-- ## 3: Identify Employees Who Handled Orders with Products from Multiple Categories
+-- Write a query to find employees (FirstName and LastName) who have processed orders containing products from more than two categories. Use the `Orders`, `OrderDetails`, `Employees`, `Products`, and `Categories` tables.
+
+SELECT DISTINCT e.FirstName, e.LastName
+FROM Orders o
+    JOIN OrderDetails od ON od.OrderID = o.OrderID
+    JOIN Employees e ON e.EmployeeID = o.EmployeeID
+    JOIN Products p ON p.ProductID = od.ProductID
+    JOIN Categories c ON c.CategoryID = p.CategoryID
+GROUP BY o.OrderID, e.FirstName, e.LastName
+HAVING COUNT(DISTINCT c.CategoryName) > 2
