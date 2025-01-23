@@ -155,3 +155,19 @@ FROM OrderDetails od
 GROUP BY c.CategoryName, s.SupplierName
 ORDER BY TotalRevenue DESC
 
+-- ## 15: Orders Involving Customers and Employees from the Same Country
+-- Write a query to find orders where the `Customer` and the `Employee` are from the same country. Display the `OrderID`, `CustomerName`, `EmployeeName` (FirstName and LastName), and the `Country`.
+
+-- Incomplete Employee Information - need Country Data for Employees
+
+-- ## 16: Products That Have Been Shipped by All Shippers
+-- Write a query to list the `ProductName` of products that have been shipped by all shippers. Use the `Orders`, `OrderDetails`, `Products`, and `Shippers` tables.
+
+SELECT p.ProductName
+FROM Orders o
+    JOIN OrderDetails od ON od.OrderID = o.OrderID
+    JOIN Products p ON p.ProductID = od.ProductID
+    JOIN Shippers s ON s.ShipperID = o.ShipperID
+GROUP BY p.ProductName
+HAVING COUNT(DISTINCT s.ShipperName) = 1(SELECT COUNT(ShipperName) FROM Shippers)
+
