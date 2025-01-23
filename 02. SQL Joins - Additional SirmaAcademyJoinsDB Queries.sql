@@ -35,3 +35,14 @@ FROM Orders o
     JOIN Categories c ON c.CategoryID = p.CategoryID
 GROUP BY o.OrderID, e.FirstName, e.LastName
 HAVING COUNT(DISTINCT c.CategoryName) > 2
+
+-- ## 4: Total Revenue by Category and Supplier
+-- Write a query to display the total revenue (`Quantity * Price`) generated for each `CategoryName` by each `SupplierName`. Use the `OrderDetails`, `Products`, `Categories`, and `Suppliers` tables. Group the results by `CategoryName` and `SupplierName`.
+
+SELECT c.CategoryName, s.SupplierName , SUM (od.Quantity * p.Price) as TotalRevenue
+FROM OrderDetails od
+    JOIN Products p ON p.ProductID = od.ProductID
+    JOIN Categories c ON c.CategoryID = p.CategoryID
+    JOIN Suppliers s ON s.SupplierID = p.SupplierID
+GROUP BY c.CategoryName, s.SupplierName
+
