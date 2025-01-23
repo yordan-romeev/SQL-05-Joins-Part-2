@@ -10,8 +10,8 @@ FROM Orders o
     JOIN Employees e ON e.EmployeeID = o.EmployeeID
     JOIN Shippers s ON s.ShipperID = o.ShipperID
     JOIN (  SELECT od.OrderID, SUM(od.Quantity * p.Price) as Total
-    FROM OrderDetails od JOIN Products p ON od.ProductID = p.ProductID
-    GROUP By od.OrderID) AS TotalPrice ON TotalPrice.OrderID = o.OrderID
+            FROM OrderDetails od JOIN Products p ON od.ProductID = p.ProductID
+            GROUP By od.OrderID ) AS TotalPrice ON TotalPrice.OrderID = o.OrderID
 
 -- ## 2: Products Supplied by Each Supplier for Specific Customers
 -- Write a query to display the `SupplierName`, `ProductName`, `CustomerName`, and the total quantity ordered by the customer. Use the `Orders`, `OrderDetails`, `Products`, `Suppliers`, and `Customers` tables. Group the results by `SupplierName`, `ProductName`, and `CustomerName`.
@@ -57,3 +57,12 @@ FROM Orders o
     JOIN Customers c ON c.CustomerID = o.CustomerID
 WHERE s.SupplierName = 'Forêts d''érables'
 
+-- ## 6: Customers Who Ordered the Most Expensive Products
+-- Write a query to find the `CustomerName`, `OrderID`, and `ProductName` for customers who ordered products with prices higher than the average price of all products. Use the `Orders`, `OrderDetails`, `Customers`, and `Products` tables.
+
+SELECT c.CustomerName, o.OrderID, p.ProductName
+FROM Orders o
+    JOIN OrderDetails od ON od.OrderID = o.OrderID
+    JOIN Customers c ON c.CustomerID = o.CustomerID
+    JOIN Products p ON p.ProductID = od.ProductID
+WHERE p.Price > (SELECT AVG(Price) FROM Products)
