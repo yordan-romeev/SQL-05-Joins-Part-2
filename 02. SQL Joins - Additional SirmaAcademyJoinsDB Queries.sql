@@ -182,3 +182,14 @@ FROM Orders o
     JOIN Shippers s ON s.ShipperID = o.ShipperID
 GROUP BY c.CustomerName, s.ShipperName
 
+
+-- ## 18: Employees with Most Orders by Category
+-- Write a query to display the `EmployeeName` (FirstName and LastName), `CategoryName`, and the number of orders they processed for each category. Use the `Orders`, `OrderDetails`, `Products`, `Categories`, and `Employees` tables.
+
+SELECT e.FirstName + ' ' + e.LastName AS EmployeeName, c.CategoryName, COUNT( DISTINCT o.OrderID) AS NumberOfOrders
+FROM Orders o
+    JOIN OrderDetails od ON od.OrderID = o.OrderID
+    JOIN Products p ON p.ProductID = od.ProductID
+    JOIN Categories c ON c.CategoryID = p.CategoryID
+    JOIN Employees e ON e.EmployeeID = o.EmployeeID
+GROUP BY e.FirstName, e.LastName, c.CategoryName
