@@ -114,3 +114,13 @@ FROM Orders o
     JOIN Suppliers s ON s.SupplierID = p.SupplierID
     JOIN Employees e ON e.EmployeeID = o.EmployeeID
 GROUP BY s.SupplierName, e.FirstName, e.LastName
+
+-- ## 11: Find Products Ordered by the Most Customers
+-- Write a query to list the `ProductName` and the number of unique `CustomerName` entries who have ordered the product. Use the `Orders`, `OrderDetails`, `Products`, and `Customers` tables.
+
+SELECT p.ProductName, COUNT(DISTINCT c.CustomerName) AS UniqieCustomersOrdered
+FROM Orders o
+    JOIN OrderDetails od ON od.OrderID = o.OrderID
+    JOIN Products p ON p.ProductID = od.ProductID
+    JOIN Customers c ON c.CustomerID = o.CustomerID
+GROUP BY p.ProductName
