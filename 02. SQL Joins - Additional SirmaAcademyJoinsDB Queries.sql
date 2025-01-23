@@ -91,3 +91,15 @@ FROM Orders o
     JOIN Shippers s ON s.ShipperID = o.ShipperID
 WHERE c.CategoryName = 'Beverages'
 GROUP BY s.ShipperName, p.ProductName
+
+-- ## 9: Analyze Customer Spending Across Categories
+-- Write a query to display the `CustomerName`, `CategoryName`, and the total amount spent (`Quantity * Price`) by each customer in each category. Use the `Orders`, `OrderDetails`, `Products`, `Categories`, and `Customers` tables.
+
+SELECT cs.CustomerName, ct.CategoryName, SUM(od.Quantity * p.Price) AS TotalAmountSpent
+FROM Orders o
+    JOIN OrderDetails od ON od.OrderID = o.OrderID
+    JOIN Products p ON p.ProductID = od.ProductID
+    JOIN Categories ct ON ct.CategoryID = p.CategoryID
+    JOIN Customers cs ON cs.CustomerID = o.CustomerID
+GROUP BY cs.CustomerName, ct.CategoryName
+ORDER BY cs.CustomerName, ct.CategoryName
