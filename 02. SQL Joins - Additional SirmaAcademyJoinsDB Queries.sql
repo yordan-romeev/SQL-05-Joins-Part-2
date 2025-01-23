@@ -134,3 +134,12 @@ FROM Orders o
     JOIN Products p ON p.ProductID = od.ProductID
     JOIN Shippers s ON s.ShipperID = o.ShipperID
 GROUP BY s.ShipperName
+
+-- ## 13: Employees Handling the Highest Quantity of Products
+-- Write a query to find the `EmployeeName` (FirstName and LastName) and the total quantity of products they have handled. Use the `Orders`, `OrderDetails`, and `Employees` tables. Group by `EmployeeName`.
+
+SELECT e.FirstName + ' ' + e.LastName AS EmployeeName, COALESCE(SUM(od.Quantity), 0) as TotalQuantityOfProducts
+FROM Employees e
+    LEFT JOIN Orders o ON o.EmployeeID = e.EmployeeID
+    LEFT JOIN OrderDetails od ON od.OrderID = o.OrderID
+GROUP BY e.FirstName, e.LastName
