@@ -197,6 +197,14 @@ GROUP BY e.FirstName, e.LastName, c.CategoryName
 -- ## 19: Products Ordered Together
 -- Write a query to find pairs of products that were ordered together in the same order. Display the `ProductName1`, `ProductName2`, and the number of times they were ordered together. Use the `OrderDetails` and `Products` tables.
 
+SELECT p1.ProductName, p2.ProductName, COUNT(*) as OrderedTogetherCount
+FROM OrderDetails od1
+    JOIN OrderDetails od2 ON od1.OrderID = od2.OrderID AND od1.ProductID < od2.ProductID --Avoids reversed duplicate pairs  
+    JOIN Products p1 ON p1.ProductID = od1.ProductID
+    JOIN Products p2 ON p2.ProductID = od2.ProductID
+GROUP BY p1.ProductName, p2.ProductName
+ORDER BY OrderedTogetherCount DESC
+
 -- ## 20: Unordered Products by Suppliers
 -- Write a query to list the `SupplierName` and `ProductName` of products that have never been ordered. Use the `Products`, `OrderDetails`, and `Suppliers` tables.
 
