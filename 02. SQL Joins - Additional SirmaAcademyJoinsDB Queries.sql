@@ -79,3 +79,15 @@ FROM Orders o
     JOIN Customers cs ON cs.CustomerID = o.CustomerID
 GROUP BY o.OrderID, cs.CustomerName,  e.FirstName, e.LastName
 ORDER BY CategoriesInOrder DESC
+
+-- ## 8: Shippers Who Transported Products from a Specific Category
+-- Write a query to find the `ShipperName`, `ProductName`, and total quantity of products transported in the `CategoryName` "Beverages." Use the `Orders`, `OrderDetails`, `Products`, `Categories`, and `Shippers` tables.
+
+SELECT s.ShipperName, p.ProductName, SUM(od.Quantity) AS TotalQuantity
+FROM Orders o
+    JOIN OrderDetails od ON od.OrderID = o.OrderID
+    JOIN Products p ON p.ProductID = od.ProductID
+    JOIN Categories c ON c.CategoryID = p.CategoryID
+    JOIN Shippers s ON s.ShipperID = o.ShipperID
+WHERE c.CategoryName = 'Beverages'
+GROUP BY s.ShipperName, p.ProductName
