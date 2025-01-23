@@ -66,3 +66,16 @@ FROM Orders o
     JOIN Customers c ON c.CustomerID = o.CustomerID
     JOIN Products p ON p.ProductID = od.ProductID
 WHERE p.Price > (SELECT AVG(Price) FROM Products)
+
+-- ## 7: Find Orders with the Most Product Categories
+-- Write a query to list the `OrderID` and the number of distinct product categories ordered in each order. Include the `CustomerName` and the `EmployeeName` (FirstName and LastName). Use the `Orders`, `OrderDetails`, `Products`, `Categories`, `Customers`, and `Employees` tables.
+
+SELECT o.OrderID, COUNT(DISTINCT c.CategoryName) as CategoriesInOrder, cs.CustomerName, e.FirstName + ' ' + e.LastName AS EmployeeName
+FROM Orders o
+    JOIN OrderDetails od ON od.OrderID = o.OrderID
+    JOIN Employees e ON e.EmployeeID = o.EmployeeID
+    JOIN Products p ON p.ProductID = od.ProductID
+    JOIN Categories c ON c.CategoryID = p.CategoryID
+    JOIN Customers cs ON cs.CustomerID = o.CustomerID
+GROUP BY o.OrderID, cs.CustomerName,  e.FirstName, e.LastName
+ORDER BY CategoriesInOrder DESC
