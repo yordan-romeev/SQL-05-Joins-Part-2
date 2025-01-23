@@ -201,7 +201,7 @@ GROUP BY e.FirstName, e.LastName, c.CategoryName
 -- Write a query to list the `SupplierName` and `ProductName` of products that have never been ordered. Use the `Products`, `OrderDetails`, and `Suppliers` tables.
 
 SELECT DISTINCT s.SupplierName, p.ProductName
-FROM OrderDetails od
-    JOIN Products p on p.ProductID = od.ProductID
+FROM Products p 
     JOIN Suppliers s on s.SupplierID = p.SupplierID
+    LEFT JOIN OrderDetails od on od.ProductID = p.ProductID
 WHERE p.ProductID NOT IN (SELECT DISTINCT ProductID FROM OrderDetails)
