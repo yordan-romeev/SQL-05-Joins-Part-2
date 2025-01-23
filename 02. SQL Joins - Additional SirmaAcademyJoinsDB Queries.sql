@@ -193,3 +193,15 @@ FROM Orders o
     JOIN Categories c ON c.CategoryID = p.CategoryID
     JOIN Employees e ON e.EmployeeID = o.EmployeeID
 GROUP BY e.FirstName, e.LastName, c.CategoryName
+
+-- ## 19: Products Ordered Together
+-- Write a query to find pairs of products that were ordered together in the same order. Display the `ProductName1`, `ProductName2`, and the number of times they were ordered together. Use the `OrderDetails` and `Products` tables.
+
+-- ## 20: Unordered Products by Suppliers
+-- Write a query to list the `SupplierName` and `ProductName` of products that have never been ordered. Use the `Products`, `OrderDetails`, and `Suppliers` tables.
+
+SELECT DISTINCT s.SupplierName, p.ProductName
+FROM OrderDetails od
+    JOIN Products p on p.ProductID = od.ProductID
+    JOIN Suppliers s on s.SupplierID = p.SupplierID
+WHERE p.ProductID NOT IN (SELECT DISTINCT ProductID FROM OrderDetails)
