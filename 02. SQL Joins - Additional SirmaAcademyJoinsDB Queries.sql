@@ -124,3 +124,13 @@ FROM Orders o
     JOIN Products p ON p.ProductID = od.ProductID
     JOIN Customers c ON c.CustomerID = o.CustomerID
 GROUP BY p.ProductName
+
+-- ## 12: Shippers with the Highest Average Order Value
+-- Write a query to display the `ShipperName` and their average order value (SUM(`Quantity * Price`) divided by the number of orders shipped). Use the `Orders`, `OrderDetails`, `Products`, and `Shippers` tables.
+
+SELECT s.ShipperName, SUM(od.Quantity * p.Price) / COUNT(DISTINCT o.OrderID) AS AverageOrderAmount
+FROM Orders o
+    JOIN OrderDetails od ON od.OrderID = o.OrderID
+    JOIN Products p ON p.ProductID = od.ProductID
+    JOIN Shippers s ON s.ShipperID = o.ShipperID
+GROUP BY s.ShipperName
