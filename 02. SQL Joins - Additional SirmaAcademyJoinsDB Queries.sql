@@ -46,3 +46,14 @@ FROM OrderDetails od
     JOIN Suppliers s ON s.SupplierID = p.SupplierID
 GROUP BY c.CategoryName, s.SupplierName
 
+-- ## 5: Orders with Products from a Specific Supplier
+-- Write a query to display the `OrderID`, `OrderDate`, `CustomerName`, and the `ProductName` of products ordered from a specific `SupplierName`. Use the `Orders`, `OrderDetails`, `Products`, `Suppliers`, and `Customers` tables.
+
+SELECT o.OrderID, o.OrderDate, c.CustomerName, p.ProductName
+FROM Orders o
+    JOIN OrderDetails od ON od.OrderID = o.OrderID
+    JOIN Products p ON p.ProductID = od.ProductID
+    JOIN Suppliers s ON s.SupplierID = p.SupplierID
+    JOIN Customers c ON c.CustomerID = o.CustomerID
+WHERE s.SupplierName = 'Forêts d''érables'
+
